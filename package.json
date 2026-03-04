@@ -1,0 +1,46 @@
+{
+  "name": "markup-lang",
+  "version": "1.0.0",
+  "description": "A lightweight custom markup language parser — converts Markup syntax to HTML.",
+  "keywords": ["markup", "parser", "renderer", "html", "lightweight"],
+  "license": "MIT",
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MrGoatsy/markup-lang"
+  },
+  "homepage": "https://github.com/MrGoatsy/markup-lang#readme",
+  "bugs": "https://github.com/MrGoatsy/markup-lang/issues",
+
+  "type": "module",
+
+  "main":    "./dist/markup.cjs.js",
+  "module":  "./dist/markup.esm.js",
+  "browser": "./dist/markup.umd.js",
+  "style":   "./markup.css",
+
+  "exports": {
+    ".": {
+      "import":  "./dist/markup.esm.js",
+      "require": "./dist/markup.cjs.js",
+      "default": "./dist/markup.umd.js"
+    },
+    "./markup.css": "./markup.css"
+  },
+
+  "files": [
+    "dist/",
+    "src/",
+    "markup.css",
+    "README.md"
+  ],
+
+  "scripts": {
+    "build":   "node build.mjs",
+    "prepublishOnly": "npm run build"
+  },
+
+  "devDependencies": {
+    "esbuild": "^0.21.0"
+  }
+}
