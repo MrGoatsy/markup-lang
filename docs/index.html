@@ -1,220 +1,648 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Markup — Not Markdown</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;800&display=swap');
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markup - Not Markdown</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;800&display=swap');
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  :root {
-    --bg: #0d0d0d;
-    --ink: #f0ede6;
-    --accent: #ff4d00;
-    --dim: #555;
-    --border: #222;
-    --success: #00c97a;
-    --info: #00d4ff;
-    --warn-col: #ffb300;
-    --error: #ff3366;
-  }
+    :root {
+      --bg: #0d0d0d;
+      --ink: #f0ede6;
+      --accent: #ff4d00;
+      --dim: #555;
+      --border: #222;
+      --success: #00c97a;
+      --info: #00d4ff;
+      --warn-col: #ffb300;
+      --error: #ff3366;
+    }
 
-  body {
-    background: var(--bg);
-    color: var(--ink);
-    font-family: 'Syne', sans-serif;
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
 
-  /* ── LEFT PANEL ── */
-  #editor-panel {
-    padding: 28px 32px;
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    overflow: hidden;
-  }
+    /* ── LEFT PANEL ── */
+    #editor-panel {
+      padding: 28px 32px;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-  .panel-label {
-    font-family: 'Syne Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    color: var(--accent);
-    text-transform: uppercase;
-  }
+    .panel-label {
+      font-family: 'Syne Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
 
-  .title-row { display: flex; align-items: baseline; gap: 12px; }
-  h1.logo { font-size: 40px; font-weight: 800; letter-spacing: -2px; line-height: 1; }
-  .not-md { font-size: 11px; color: var(--dim); font-family: 'Syne Mono', monospace; letter-spacing: 0.1em; text-decoration: line-through; text-decoration-color: var(--accent); }
+    .title-row {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
 
-  /* TOOLBAR */
-  .toolbar { display: flex; flex-wrap: wrap; gap: 3px; }
-  .tb-btn {
-    background: #181818; border: 1px solid var(--border); color: #aaa;
-    font-family: 'Syne Mono', monospace; font-size: 10px; padding: 4px 9px;
-    cursor: pointer; border-radius: 2px; transition: all 0.12s; white-space: nowrap;
-  }
-  .tb-btn:hover { background: #1e1e1e; border-color: var(--accent); color: var(--accent); }
-  .tb-sep { width: 1px; background: var(--border); margin: 2px 3px; }
+    h1.logo {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1;
+    }
 
-  #editor {
-    flex: 1;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--ink);
-    font-family: 'Syne Mono', monospace;
-    font-size: 12.5px;
-    line-height: 1.85;
-    padding: 18px;
-    resize: none;
-    outline: none;
-    border-radius: 2px;
-    transition: border-color 0.2s;
-    tab-size: 2;
-  }
-  #editor:focus { border-color: var(--accent); }
+    .not-md {
+      font-size: 11px;
+      color: var(--dim);
+      font-family: 'Syne Mono', monospace;
+      letter-spacing: 0.1em;
+      text-decoration: line-through;
+      text-decoration-color: var(--accent);
+    }
 
-  .statusbar {
-    display: flex; justify-content: space-between; align-items: center;
-    font-family: 'Syne Mono', monospace; font-size: 10px; color: var(--dim);
-    flex-wrap: wrap; gap: 6px;
-  }
-  .statusbar span { color: #888; }
+    /* TOOLBAR */
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px;
+    }
 
-  #export-btn {
-    background: var(--accent); border: none; color: #000;
-    font-family: 'Syne Mono', monospace; font-size: 10px; letter-spacing: 0.08em;
-    padding: 5px 13px; cursor: pointer; border-radius: 2px; font-weight: 700;
-    transition: opacity 0.15s;
-  }
-  #export-btn:hover { opacity: 0.82; }
+    .tb-btn {
+      background: #181818;
+      border: 1px solid var(--border);
+      color: #aaa;
+      font-family: 'Syne Mono', monospace;
+      font-size: 10px;
+      padding: 4px 9px;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.12s;
+      white-space: nowrap;
+    }
 
-  .cheatsheet { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px 12px; }
-  .cheat-item { display: flex; align-items: center; gap: 5px; font-size: 9.5px; color: var(--dim); }
-  .cheat-item code { font-family: 'Syne Mono', monospace; color: var(--accent); font-size: 8.5px; background: #171717; padding: 1px 4px; border-radius: 2px; white-space: nowrap; }
+    .tb-btn:hover {
+      background: #1e1e1e;
+      border-color: var(--accent);
+      color: var(--accent);
+    }
 
-  /* ── RIGHT PANEL ── */
-  #preview-panel { padding: 28px 36px 80px; overflow-y: auto; scroll-behavior: smooth; }
-  .preview-top { margin-bottom: 32px; }
-  #preview { max-width: 580px; line-height: 1.75; }
+    .tb-sep {
+      width: 1px;
+      background: var(--border);
+      margin: 2px 3px;
+    }
 
-  /* ── RENDERED STYLES ── */
-  #preview .mu-h1 { font-size: 38px; font-weight: 800; letter-spacing: -1.5px; border-bottom: 3px solid var(--accent); padding-bottom: 8px; margin: 0 0 26px; line-height: 1.1; }
-  #preview .mu-h2 { font-size: 24px; font-weight: 700; margin: 34px 0 13px; }
-  #preview .mu-h3 { font-size: 10px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: var(--accent); margin: 26px 0 10px; }
-  #preview p { margin-bottom: 15px; font-size: 15px; color: #c8c4bc; }
+    #editor {
+      flex: 1;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--ink);
+      font-family: 'Syne Mono', monospace;
+      font-size: 12.5px;
+      line-height: 1.85;
+      padding: 18px;
+      resize: none;
+      outline: none;
+      border-radius: 2px;
+      transition: border-color 0.2s;
+      tab-size: 2;
+    }
 
-  #preview .mu-bold   { font-weight: 800; color: var(--ink); }
-  #preview .mu-italic { font-style: italic; color: #aaa; }
-  #preview .mu-strike { text-decoration: line-through; opacity: 0.45; }
-  #preview .mu-highlight { background: var(--accent); color: #000; padding: 0 4px; border-radius: 2px; font-weight: 700; }
-  #preview .mu-code   { font-family: 'Syne Mono', monospace; background: #1c1c1c; border: 1px solid #2a2a2a; padding: 1px 6px; font-size: 12px; border-radius: 2px; color: #7dffd4; }
-  #preview .mu-link   { color: var(--accent); text-decoration: none; border-bottom: 1px solid #ff4d0055; transition: border-color 0.15s; }
-  #preview .mu-link:hover { border-color: var(--accent); }
-  #preview .mu-kbd    { font-family: 'Syne Mono', monospace; font-size: 11px; background: #1e1e1e; border: 1px solid #3a3a3a; border-bottom: 3px solid #3a3a3a; padding: 1px 7px; border-radius: 3px; color: var(--ink); }
-  #preview .mu-sup    { font-size: 10px; vertical-align: super; color: var(--accent); font-family: 'Syne Mono', monospace; }
+    #editor:focus {
+      border-color: var(--accent);
+    }
 
-  #preview .mu-codeblock { font-family: 'Syne Mono', monospace; background: #141414; border-left: 3px solid var(--accent); padding: 15px 18px; margin: 18px 0; font-size: 12px; line-height: 1.8; color: #7dffd4; white-space: pre; overflow-x: auto; display: block; border-radius: 0 2px 2px 0; }
-  #preview .mu-quote { border-left: 3px solid #2a2a2a; padding: 8px 18px; margin: 18px 0; color: #888; font-style: italic; font-size: 15px; }
-  #preview .mu-hr { border: none; border-top: 1px solid #1e1e1e; margin: 30px 0; position: relative; }
-  #preview .mu-hr::after { content: '◆'; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); background: var(--bg); padding: 0 12px; color: var(--accent); font-size: 9px; }
+    .statusbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Syne Mono', monospace;
+      font-size: 10px;
+      color: var(--dim);
+      flex-wrap: wrap;
+      gap: 6px;
+    }
 
-  #preview .mu-li { display: flex; gap: 10px; margin-bottom: 7px; font-size: 15px; color: #c8c4bc; }
-  #preview .mu-li::before { content: '▸'; color: var(--accent); flex-shrink: 0; margin-top: 2px; }
-  #preview .mu-oli { display: flex; gap: 10px; margin-bottom: 7px; font-size: 15px; color: #c8c4bc; }
-  #preview .mu-oli .num { color: var(--accent); font-family: 'Syne Mono', monospace; font-size: 11px; min-width: 18px; flex-shrink: 0; margin-top: 3px; }
+    .statusbar span {
+      color: #888;
+    }
 
-  #preview .mu-check { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 7px; font-size: 15px; color: #c8c4bc; cursor: pointer; user-select: none; }
-  #preview .mu-check-box { width: 16px; height: 16px; border: 1px solid #3a3a3a; border-radius: 2px; flex-shrink: 0; margin-top: 3px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
-  #preview .mu-check.checked .mu-check-box { background: var(--accent); border-color: var(--accent); }
-  #preview .mu-check.checked .mu-check-box::after { content: '✓'; font-size: 9px; color: #000; font-weight: 900; }
-  #preview .mu-check.checked .mu-check-label { text-decoration: line-through; opacity: 0.45; }
+    #export-btn {
+      background: var(--accent);
+      border: none;
+      color: #000;
+      font-family: 'Syne Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      padding: 5px 13px;
+      cursor: pointer;
+      border-radius: 2px;
+      font-weight: 700;
+      transition: opacity 0.15s;
+    }
 
-  #preview .mu-callout { padding: 12px 16px; margin: 18px 0; border-left: 3px solid; border-radius: 0 3px 3px 0; font-size: 14px; display: flex; gap: 10px; align-items: flex-start; }
-  #preview .mu-callout .icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
-  #preview .mu-callout.info    { background: #001820; border-color: var(--info);     color: #80e8ff; }
-  #preview .mu-callout.success { background: #001a0f; border-color: var(--success);  color: #5fffb8; }
-  #preview .mu-callout.warning { background: #1a1000; border-color: var(--warn-col); color: #ffd97a; }
-  #preview .mu-callout.error   { background: #1a000e; border-color: var(--error);    color: #ff88aa; }
+    #export-btn:hover {
+      opacity: 0.82;
+    }
 
-  #preview .mu-table { width: 100%; border-collapse: collapse; margin: 22px 0; font-size: 14px; }
-  #preview .mu-table th { background: #161616; color: var(--accent); font-family: 'Syne Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; padding: 10px 13px; text-align: left; border-bottom: 2px solid var(--accent); }
-  #preview .mu-table td { padding: 8px 13px; border-bottom: 1px solid #1a1a1a; color: #c8c4bc; vertical-align: top; }
-  #preview .mu-table tr:hover td { background: #131313; }
+    .cheatsheet {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 4px 12px;
+    }
 
-  #preview .mu-img-wrap { margin: 20px 0; }
-  #preview .mu-img { max-width: 100%; height: auto; display: block; border: 1px solid var(--border); border-radius: 2px; }
-  #preview .mu-img-caption { font-size: 11px; color: var(--dim); font-style: italic; margin-top: 6px; font-family: 'Syne Mono', monospace; }
+    .cheat-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 9.5px;
+      color: var(--dim);
+    }
 
-  #preview .mu-details { margin: 14px 0; border: 1px solid var(--border); border-radius: 2px; overflow: hidden; }
-  #preview .mu-summary { padding: 11px 15px; cursor: pointer; font-weight: 700; display: flex; justify-content: space-between; align-items: center; background: #131313; font-size: 14px; user-select: none; transition: background 0.15s; }
-  #preview .mu-summary:hover { background: #181818; }
-  #preview .mu-summary .arrow { color: var(--accent); font-family: 'Syne Mono', monospace; font-size: 11px; transition: transform 0.2s; display: inline-block; }
-  #preview .mu-details.open .arrow { transform: rotate(90deg); }
-  #preview .mu-details-body { padding: 14px 15px; border-top: 1px solid var(--border); display: none; font-size: 14px; color: #c8c4bc; }
-  #preview .mu-details.open .mu-details-body { display: block; }
+    .cheat-item code {
+      font-family: 'Syne Mono', monospace;
+      color: var(--accent);
+      font-size: 8.5px;
+      background: #171717;
+      padding: 1px 4px;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
 
-  #preview .mu-footnotes { margin-top: 44px; padding-top: 18px; border-top: 1px solid #1a1a1a; }
-  #preview .mu-footnotes .fn-title { font-family: 'Syne Mono', monospace; font-size: 9px; letter-spacing: 0.3em; color: var(--dim); text-transform: uppercase; margin-bottom: 12px; }
-  #preview .mu-fn-entry { font-size: 13px; color: #777; margin-bottom: 6px; display: flex; gap: 10px; }
-  #preview .mu-fn-entry .fn-num { color: var(--accent); font-family: 'Syne Mono', monospace; font-size: 10px; flex-shrink: 0; margin-top: 1px; }
+    /* ── RIGHT PANEL ── */
+    #preview-panel {
+      padding: 28px 36px 80px;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
 
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: #252525; border-radius: 2px; }
-</style>
+    .preview-top {
+      margin-bottom: 32px;
+    }
+
+    #preview {
+      max-width: 580px;
+      line-height: 1.75;
+    }
+
+    /* ── RENDERED STYLES ── */
+    #preview .mu-h1 {
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      border-bottom: 3px solid var(--accent);
+      padding-bottom: 8px;
+      margin: 0 0 26px;
+      line-height: 1.1;
+    }
+
+    #preview .mu-h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 34px 0 13px;
+    }
+
+    #preview .mu-h3 {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 26px 0 10px;
+    }
+
+    #preview p {
+      margin-bottom: 15px;
+      font-size: 15px;
+      color: #c8c4bc;
+    }
+
+    #preview .mu-bold {
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    #preview .mu-italic {
+      font-style: italic;
+      color: #aaa;
+    }
+
+    #preview .mu-strike {
+      text-decoration: line-through;
+      opacity: 0.45;
+    }
+
+    #preview .mu-highlight {
+      background: var(--accent);
+      color: #000;
+      padding: 0 4px;
+      border-radius: 2px;
+      font-weight: 700;
+    }
+
+    #preview .mu-code {
+      font-family: 'Syne Mono', monospace;
+      background: #1c1c1c;
+      border: 1px solid #2a2a2a;
+      padding: 1px 6px;
+      font-size: 12px;
+      border-radius: 2px;
+      color: #7dffd4;
+    }
+
+    #preview .mu-link {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid #ff4d0055;
+      transition: border-color 0.15s;
+    }
+
+    #preview .mu-link:hover {
+      border-color: var(--accent);
+    }
+
+    #preview .mu-kbd {
+      font-family: 'Syne Mono', monospace;
+      font-size: 11px;
+      background: #1e1e1e;
+      border: 1px solid #3a3a3a;
+      border-bottom: 3px solid #3a3a3a;
+      padding: 1px 7px;
+      border-radius: 3px;
+      color: var(--ink);
+    }
+
+    #preview .mu-sup {
+      font-size: 10px;
+      vertical-align: super;
+      color: var(--accent);
+      font-family: 'Syne Mono', monospace;
+    }
+
+    #preview .mu-codeblock {
+      font-family: 'Syne Mono', monospace;
+      background: #141414;
+      border-left: 3px solid var(--accent);
+      padding: 15px 18px;
+      margin: 18px 0;
+      font-size: 12px;
+      line-height: 1.8;
+      color: #7dffd4;
+      white-space: pre;
+      overflow-x: auto;
+      display: block;
+      border-radius: 0 2px 2px 0;
+    }
+
+    #preview .mu-quote {
+      border-left: 3px solid #2a2a2a;
+      padding: 8px 18px;
+      margin: 18px 0;
+      color: #888;
+      font-style: italic;
+      font-size: 15px;
+    }
+
+    #preview .mu-hr {
+      border: none;
+      border-top: 1px solid #1e1e1e;
+      margin: 30px 0;
+      position: relative;
+    }
+
+    #preview .mu-hr::after {
+      content: '◆';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--bg);
+      padding: 0 12px;
+      color: var(--accent);
+      font-size: 9px;
+    }
+
+    #preview .mu-li {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 7px;
+      font-size: 15px;
+      color: #c8c4bc;
+    }
+
+    #preview .mu-li::before {
+      content: '▸';
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    #preview .mu-oli {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 7px;
+      font-size: 15px;
+      color: #c8c4bc;
+    }
+
+    #preview .mu-oli .num {
+      color: var(--accent);
+      font-family: 'Syne Mono', monospace;
+      font-size: 11px;
+      min-width: 18px;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    #preview .mu-check {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 7px;
+      font-size: 15px;
+      color: #c8c4bc;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    #preview .mu-check-box {
+      width: 16px;
+      height: 16px;
+      border: 1px solid #3a3a3a;
+      border-radius: 2px;
+      flex-shrink: 0;
+      margin-top: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+
+    #preview .mu-check.checked .mu-check-box {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    #preview .mu-check.checked .mu-check-box::after {
+      content: '✓';
+      font-size: 9px;
+      color: #000;
+      font-weight: 900;
+    }
+
+    #preview .mu-check.checked .mu-check-label {
+      text-decoration: line-through;
+      opacity: 0.45;
+    }
+
+    #preview .mu-callout {
+      padding: 12px 16px;
+      margin: 18px 0;
+      border-left: 3px solid;
+      border-radius: 0 3px 3px 0;
+      font-size: 14px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    #preview .mu-callout .icon {
+      font-size: 14px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    #preview .mu-callout.info {
+      background: #001820;
+      border-color: var(--info);
+      color: #80e8ff;
+    }
+
+    #preview .mu-callout.success {
+      background: #001a0f;
+      border-color: var(--success);
+      color: #5fffb8;
+    }
+
+    #preview .mu-callout.warning {
+      background: #1a1000;
+      border-color: var(--warn-col);
+      color: #ffd97a;
+    }
+
+    #preview .mu-callout.error {
+      background: #1a000e;
+      border-color: var(--error);
+      color: #ff88aa;
+    }
+
+    #preview .mu-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 22px 0;
+      font-size: 14px;
+    }
+
+    #preview .mu-table th {
+      background: #161616;
+      color: var(--accent);
+      font-family: 'Syne Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 10px 13px;
+      text-align: left;
+      border-bottom: 2px solid var(--accent);
+    }
+
+    #preview .mu-table td {
+      padding: 8px 13px;
+      border-bottom: 1px solid #1a1a1a;
+      color: #c8c4bc;
+      vertical-align: top;
+    }
+
+    #preview .mu-table tr:hover td {
+      background: #131313;
+    }
+
+    #preview .mu-img-wrap {
+      margin: 20px 0;
+    }
+
+    #preview .mu-img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+    }
+
+    #preview .mu-img-caption {
+      font-size: 11px;
+      color: var(--dim);
+      font-style: italic;
+      margin-top: 6px;
+      font-family: 'Syne Mono', monospace;
+    }
+
+    #preview .mu-details {
+      margin: 14px 0;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    #preview .mu-summary {
+      padding: 11px 15px;
+      cursor: pointer;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #131313;
+      font-size: 14px;
+      user-select: none;
+      transition: background 0.15s;
+    }
+
+    #preview .mu-summary:hover {
+      background: #181818;
+    }
+
+    #preview .mu-summary .arrow {
+      color: var(--accent);
+      font-family: 'Syne Mono', monospace;
+      font-size: 11px;
+      transition: transform 0.2s;
+      display: inline-block;
+    }
+
+    #preview .mu-details.open .arrow {
+      transform: rotate(90deg);
+    }
+
+    #preview .mu-details-body {
+      padding: 14px 15px;
+      border-top: 1px solid var(--border);
+      display: none;
+      font-size: 14px;
+      color: #c8c4bc;
+    }
+
+    #preview .mu-details.open .mu-details-body {
+      display: block;
+    }
+
+    #preview .mu-footnotes {
+      margin-top: 44px;
+      padding-top: 18px;
+      border-top: 1px solid #1a1a1a;
+    }
+
+    #preview .mu-footnotes .fn-title {
+      font-family: 'Syne Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      color: var(--dim);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    #preview .mu-fn-entry {
+      font-size: 13px;
+      color: #777;
+      margin-bottom: 6px;
+      display: flex;
+      gap: 10px;
+    }
+
+    #preview .mu-fn-entry .fn-num {
+      color: var(--accent);
+      font-family: 'Syne Mono', monospace;
+      font-size: 10px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #252525;
+      border-radius: 2px;
+    }
+  </style>
 </head>
+
 <body>
 
-<div id="editor-panel">
-  <div>
-    <div class="panel-label">Language v2</div>
-    <div class="title-row">
-      <h1 class="logo">Markup</h1>
-      <span class="not-md">not markdown</span>
+  <div id="editor-panel">
+    <div>
+      <div class="panel-label">Language v2</div>
+      <div class="title-row">
+        <h1 class="logo">Markup</h1>
+        <span class="not-md">not markdown</span>
+      </div>
     </div>
-  </div>
 
-  <div class="toolbar">
-    <button class="tb-btn" data-wrap="**|**" title="Ctrl+B"><b>B</b></button>
-    <button class="tb-btn" data-wrap="//|//" title="Ctrl+I"><em>I</em></button>
-    <button class="tb-btn" data-wrap="~~|~~" title="Ctrl+D">S̶</button>
-    <button class="tb-btn" data-wrap="==|==">HL</button>
-    <button class="tb-btn" data-wrap="`|`">`code`</button>
-    <button class="tb-btn" data-wrap="[[|]]">[[kbd]]</button>
-    <div class="tb-sep"></div>
-    <button class="tb-btn" data-prefix="# ">H1</button>
-    <button class="tb-btn" data-prefix="## ">H2</button>
-    <button class="tb-btn" data-prefix="### ">H3</button>
-    <div class="tb-sep"></div>
-    <button class="tb-btn" data-prefix="- ">• list</button>
-    <button class="tb-btn" data-prefix="1. ">1. list</button>
-    <button class="tb-btn" data-prefix="[ ] ">☐ task</button>
-    <button class="tb-btn" data-prefix="> ">❝ quote</button>
-    <div class="tb-sep"></div>
-    <button class="tb-btn" data-insert="[INFO] ">ℹ info</button>
-    <button class="tb-btn" data-insert="[SUCCESS] ">✓ ok</button>
-    <button class="tb-btn" data-insert="[WARNING] ">⚠ warn</button>
-    <button class="tb-btn" data-insert="[ERROR] ">✕ err</button>
-    <div class="tb-sep"></div>
-    <button class="tb-btn" data-insert="---">— hr</button>
-    <button class="tb-btn" data-insert="![caption](https://picsum.photos/400/200)">🖼 img</button>
-    <button class="tb-btn" data-insert="[link text](https://example.com)">🔗 link</button>
-    <button class="tb-btn" data-insert="[? Section title&#10;Content goes here&#10;?]">▶ fold</button>
-    <button class="tb-btn" data-insert="| Col A | Col B | Col C |&#10;| val 1 | val 2 | val 3 |">⊞ table</button>
-    <button class="tb-btn" data-insert="[^1]">fn ref</button>
-    <button class="tb-btn" data-insert="&#10;[^1]: Footnote text here">fn def</button>
-  </div>
+    <div class="toolbar">
+      <button class="tb-btn" data-wrap="**|**" title="Ctrl+B"><b>B</b></button>
+      <button class="tb-btn" data-wrap="//|//" title="Ctrl+I"><em>I</em></button>
+      <button class="tb-btn" data-wrap="~~|~~" title="Ctrl+D">S̶</button>
+      <button class="tb-btn" data-wrap="==|==">HL</button>
+      <button class="tb-btn" data-wrap="`|`">`code`</button>
+      <button class="tb-btn" data-wrap="[[|]]">[[kbd]]</button>
+      <div class="tb-sep"></div>
+      <button class="tb-btn" data-prefix="# ">H1</button>
+      <button class="tb-btn" data-prefix="## ">H2</button>
+      <button class="tb-btn" data-prefix="### ">H3</button>
+      <div class="tb-sep"></div>
+      <button class="tb-btn" data-prefix="- ">• list</button>
+      <button class="tb-btn" data-prefix="1. ">1. list</button>
+      <button class="tb-btn" data-prefix="[ ] ">☐ task</button>
+      <button class="tb-btn" data-prefix="> ">❝ quote</button>
+      <div class="tb-sep"></div>
+      <button class="tb-btn" data-insert="[INFO] ">ℹ info</button>
+      <button class="tb-btn" data-insert="[SUCCESS] ">✓ ok</button>
+      <button class="tb-btn" data-insert="[WARNING] ">⚠ warn</button>
+      <button class="tb-btn" data-insert="[ERROR] ">✕ err</button>
+      <div class="tb-sep"></div>
+      <button class="tb-btn" data-insert="---">— hr</button>
+      <button class="tb-btn" data-insert="![caption](https://picsum.photos/400/200)">🖼 img</button>
+      <button class="tb-btn" data-insert="[link text](https://example.com)">🔗 link</button>
+      <button class="tb-btn" data-insert="[? Section title&#10;Content goes here&#10;?]">▶ fold</button>
+      <button class="tb-btn" data-insert="| Col A | Col B | Col C |&#10;| val 1 | val 2 | val 3 |">⊞ table</button>
+      <button class="tb-btn" data-insert="[^1]">fn ref</button>
+      <button class="tb-btn" data-insert="&#10;[^1]: Footnote text here">fn def</button>
+    </div>
 
-  <textarea id="editor" spellcheck="false"># Markup v2
+    <textarea id="editor" spellcheck="false"># Markup v2
 
 Now with **everything**.
 
@@ -292,278 +720,285 @@ Markup was invented today.[^1] It may or may not catch on.[^2]
 [^2]: Signs point to: yes.
 </textarea>
 
-  <div class="statusbar">
-    <div>words: <span id="wc">0</span> · chars: <span id="cc">0</span> · lines: <span id="lc">0</span></div>
-    <button id="export-btn">↓ Export HTML</button>
+    <div class="statusbar">
+      <div>words: <span id="wc">0</span> · chars: <span id="cc">0</span> · lines: <span id="lc">0</span></div>
+      <button id="export-btn">↓ Export HTML</button>
+    </div>
+
+    <div class="cheatsheet">
+      <div class="cheat-item"><code># / ## / ###</code> headings</div>
+      <div class="cheat-item"><code>**bold**</code> bold</div>
+      <div class="cheat-item"><code>//italic//</code> italic</div>
+      <div class="cheat-item"><code>~~strike~~</code> strike</div>
+      <div class="cheat-item"><code>==hi==</code> highlight</div>
+      <div class="cheat-item"><code>[[key]]</code> keyboard</div>
+      <div class="cheat-item"><code>`code`</code> inline code</div>
+      <div class="cheat-item"><code>4spaces</code> code block</div>
+      <div class="cheat-item"><code>> text</code> quote</div>
+      <div class="cheat-item"><code>- item</code> bullet</div>
+      <div class="cheat-item"><code>1. item</code> numbered</div>
+      <div class="cheat-item"><code>[ ] / [x]</code> checkbox</div>
+      <div class="cheat-item"><code>[INFO]</code> callout</div>
+      <div class="cheat-item"><code>| a | b |</code> table</div>
+      <div class="cheat-item"><code>![cap](url)</code> image</div>
+      <div class="cheat-item"><code>[? … ?]</code> collapse</div>
+      <div class="cheat-item"><code>[^1]</code> footnote</div>
+      <div class="cheat-item"><code>---</code> divider</div>
+    </div>
   </div>
 
-  <div class="cheatsheet">
-    <div class="cheat-item"><code># / ## / ###</code> headings</div>
-    <div class="cheat-item"><code>**bold**</code> bold</div>
-    <div class="cheat-item"><code>//italic//</code> italic</div>
-    <div class="cheat-item"><code>~~strike~~</code> strike</div>
-    <div class="cheat-item"><code>==hi==</code> highlight</div>
-    <div class="cheat-item"><code>[[key]]</code> keyboard</div>
-    <div class="cheat-item"><code>`code`</code> inline code</div>
-    <div class="cheat-item"><code>4spaces</code> code block</div>
-    <div class="cheat-item"><code>> text</code> quote</div>
-    <div class="cheat-item"><code>- item</code> bullet</div>
-    <div class="cheat-item"><code>1. item</code> numbered</div>
-    <div class="cheat-item"><code>[ ] / [x]</code> checkbox</div>
-    <div class="cheat-item"><code>[INFO]</code> callout</div>
-    <div class="cheat-item"><code>| a | b |</code> table</div>
-    <div class="cheat-item"><code>![cap](url)</code> image</div>
-    <div class="cheat-item"><code>[? … ?]</code> collapse</div>
-    <div class="cheat-item"><code>[^1]</code> footnote</div>
-    <div class="cheat-item"><code>---</code> divider</div>
+  <div
+    style="margin-top: auto; text-align: center; font-family: 'Syne Mono', monospace; font-size: 10px; color: #555; padding-top: 10px;">
+    Created by <a href="https://heekdevelopment.com" target="_blank"
+      style="color: #555; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#ff4d00'"
+      onmouseout="this.style.color='#555'">Heek Development</a>
   </div>
-</div>
 
-<div id="preview-panel">
-  <div class="preview-top">
-    <div class="panel-label">Preview</div>
+  <div id="preview-panel">
+    <div class="preview-top">
+      <div class="panel-label">Preview</div>
+    </div>
+    <div id="preview"></div>
   </div>
-  <div id="preview"></div>
-</div>
 
-<script>
-// ── PARSER ──────────────────────────────────────────────────────────────────
+  <script>
+    // ── PARSER ──────────────────────────────────────────────────────────────────
 
-function parseMarkup(raw) {
-  const lines = raw.split('\n');
-  let html = '';
-  // PASS 1: collect all footnote definitions first
-  let footnotes = {};
-  for (const line of lines) {
-    const fnDef = line.match(/^\[\^(\w+)\]:\s+(.+)/);
-    if (fnDef) footnotes[fnDef[1]] = fnDef[2];
-  }
-  let olCounter = 0;
-  let inCodeBlock = false;
-  let codeLines = [];
-  let inCollapse = false;
-  let collapseTitle = '';
-  let collapseBody = '';
-  let tableRows = [];
-  let inTable = false;
-  let collapseId = 0;
+    function parseMarkup(raw) {
+      const lines = raw.split('\n');
+      let html = '';
+      // PASS 1: collect all footnote definitions first
+      let footnotes = {};
+      for (const line of lines) {
+        const fnDef = line.match(/^\[\^(\w+)\]:\s+(.+)/);
+        if (fnDef) footnotes[fnDef[1]] = fnDef[2];
+      }
+      let olCounter = 0;
+      let inCodeBlock = false;
+      let codeLines = [];
+      let inCollapse = false;
+      let collapseTitle = '';
+      let collapseBody = '';
+      let tableRows = [];
+      let inTable = false;
+      let collapseId = 0;
 
-  function flushTable() {
-    if (!tableRows.length) return;
-    let t = '<table class="mu-table">';
-    tableRows.forEach((row, idx) => {
-      const cells = row.split('|').slice(1, -1).map(c => c.trim());
-      if (idx === 0) {
-        t += '<thead><tr>' + cells.map(c => `<th>${inline(c)}</th>`).join('') + '</tr></thead><tbody>';
-      } else {
-        t += '<tr>' + cells.map(c => `<td>${inline(c)}</td>`).join('') + '</tr>';
+      function flushTable() {
+        if (!tableRows.length) return;
+        let t = '<table class="mu-table">';
+        tableRows.forEach((row, idx) => {
+          const cells = row.split('|').slice(1, -1).map(c => c.trim());
+          if (idx === 0) {
+            t += '<thead><tr>' + cells.map(c => `<th>${inline(c)}</th>`).join('') + '</tr></thead><tbody>';
+          } else {
+            t += '<tr>' + cells.map(c => `<td>${inline(c)}</td>`).join('') + '</tr>';
+          }
+        });
+        t += '</tbody></table>';
+        html += t;
+        tableRows = [];
+        inTable = false;
+      }
+
+      for (let i = 0; i < lines.length; i++) {
+        let line = lines[i];
+
+        // Code block
+        if (line.startsWith('    ')) {
+          if (inTable) flushTable();
+          if (!inCodeBlock) { inCodeBlock = true; codeLines = []; }
+          codeLines.push(esc(line.slice(4)));
+          olCounter = 0;
+          continue;
+        } else if (inCodeBlock) {
+          html += `<code class="mu-codeblock">${codeLines.join('\n')}</code>`;
+          inCodeBlock = false; codeLines = [];
+        }
+
+        // Collapsible
+        if (line.startsWith('[? ')) {
+          if (inTable) flushTable();
+          inCollapse = true;
+          collapseTitle = line.slice(3).trim();
+          collapseBody = '';
+          olCounter = 0;
+          continue;
+        }
+        if (inCollapse) {
+          if (line.trim() === '?]') {
+            const cid = 'cl' + (++collapseId);
+            html += `<div class="mu-details" id="${cid}"><div class="mu-summary" onclick="toggleCollapse('${cid}')"><span>${inline(collapseTitle)}</span><span class="arrow">▶</span></div><div class="mu-details-body">${miniParse(collapseBody)}</div></div>`;
+            inCollapse = false;
+          } else {
+            collapseBody += line + '\n';
+          }
+          continue;
+        }
+
+        // Table
+        if (line.trim().startsWith('|') && line.trim().endsWith('|')) {
+          inTable = true;
+          tableRows.push(line.trim());
+          olCounter = 0;
+          continue;
+        } else if (inTable) {
+          flushTable();
+        }
+
+        // Footnote definitions
+        const fnDef = line.match(/^\[\^(\w+)\]:\s+(.+)/);
+        if (fnDef) { footnotes[fnDef[1]] = fnDef[2]; continue; }
+
+        // HR
+        if (line.trim() === '---') { html += '<hr class="mu-hr">'; olCounter = 0; continue; }
+
+        // Headings
+        if (line.startsWith('### ')) { html += `<h3 class="mu-h3">${inline(line.slice(4))}</h3>`; olCounter = 0; continue; }
+        if (line.startsWith('## ')) { html += `<h2 class="mu-h2">${inline(line.slice(3))}</h2>`; olCounter = 0; continue; }
+        if (line.startsWith('# ')) { html += `<div class="mu-h1">${inline(line.slice(2))}</div>`; olCounter = 0; continue; }
+
+        // Callouts
+        const cmap = { '[INFO]': 'info', '[SUCCESS]': 'success', '[WARNING]': 'warning', '[ERROR]': 'error' };
+        const imap = { 'info': 'ℹ', 'success': '✓', 'warning': '⚠', 'error': '✕' };
+        let gotCallout = false;
+        for (const [tag, cls] of Object.entries(cmap)) {
+          if (line.startsWith(tag)) {
+            html += `<div class="mu-callout ${cls}"><span class="icon">${imap[cls]}</span><span>${inline(line.slice(tag.length).trim())}</span></div>`;
+            gotCallout = true; olCounter = 0; break;
+          }
+        }
+        if (gotCallout) continue;
+
+        // Quote
+        if (line.startsWith('> ')) { html += `<blockquote class="mu-quote">${inline(line.slice(2))}</blockquote>`; olCounter = 0; continue; }
+
+        // Checkbox
+        const cbm = line.match(/^\[(x| )\] (.+)/i);
+        if (cbm) {
+          const checked = cbm[1].toLowerCase() === 'x';
+          html += `<label class="mu-check${checked ? ' checked' : ''}" onclick="this.classList.toggle('checked')"><span class="mu-check-box"></span><span class="mu-check-label">${inline(cbm[2])}</span></label>`;
+          olCounter = 0; continue;
+        }
+
+        // Ordered list
+        const olm = line.match(/^(\d+)\.\s+(.+)/);
+        if (olm) {
+          olCounter++;
+          html += `<div class="mu-oli"><span class="num">${olCounter}.</span><span>${inline(olm[2])}</span></div>`;
+          continue;
+        } else { olCounter = 0; }
+
+        // Unordered list
+        if (line.startsWith('- ')) { html += `<div class="mu-li">${inline(line.slice(2))}</div>`; continue; }
+
+        // Blank
+        if (line.trim() === '') { continue; }
+
+        // Paragraph
+        html += `<p>${inline(line)}</p>`;
+      }
+
+      if (inCodeBlock) html += `<code class="mu-codeblock">${codeLines.join('\n')}</code>`;
+      if (inTable) flushTable();
+
+      // Footnotes section (always render if any were collected in pass 1)
+      const fkeys = Object.keys(footnotes);
+      if (fkeys.length) {
+        html += '<div class="mu-footnotes"><div class="fn-title">Footnotes</div>';
+        for (const k of fkeys) {
+          html += `<div class="mu-fn-entry" id="fn-${k}"><span class="fn-num">[${k}]</span><span>${inline(footnotes[k])}</span></div>`;
+        }
+        html += '</div>';
+      }
+
+      return html;
+    }
+
+    function miniParse(text) {
+      return text.trim().split('\n').map(l => l.trim() ? `<p style="margin-bottom:8px;color:#c8c4bc;font-size:14px">${inline(l)}</p>` : '').join('');
+    }
+
+    function inline(text) {
+      text = esc(text);
+      text = text.replace(/\*\*(.+?)\*\*/g, '<span class="mu-bold">$1</span>');
+      text = text.replace(/\/\/(.+?)\/\//g, '<em class="mu-italic">$1</em>');
+      text = text.replace(/~~(.+?)~~/g, '<span class="mu-strike">$1</span>');
+      text = text.replace(/==(.+?)==/g, '<span class="mu-highlight">$1</span>');
+      text = text.replace(/`(.+?)`/g, '<code class="mu-code">$1</code>');
+      text = text.replace(/\[\[(.+?)\]\]/g, '<kbd class="mu-kbd">$1</kbd>');
+      text = text.replace(/\[\^(\w+)\](?!:)/g, '<sup class="mu-sup"><a href="#fn-$1" style="color:inherit;text-decoration:none">[$1]</a></sup>');
+      text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<div class="mu-img-wrap"><img class="mu-img" src="$2" alt="$1"><div class="mu-img-caption">$1</div></div>');
+      text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a class="mu-link" href="$2" target="_blank">$1</a>');
+      return text;
+    }
+
+    function esc(t) {
+      return t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function toggleCollapse(id) { document.getElementById(id).classList.toggle('open'); }
+
+    // ── RENDER ───────────────────────────────────────────────────────────────────
+    const editor = document.getElementById('editor');
+    const preview = document.getElementById('preview');
+
+    function render() {
+      preview.innerHTML = parseMarkup(editor.value);
+      const t = editor.value;
+      document.getElementById('wc').textContent = t.trim() ? t.trim().split(/\s+/).length : 0;
+      document.getElementById('cc').textContent = t.length;
+      document.getElementById('lc').textContent = t.split('\n').length;
+    }
+
+    editor.addEventListener('input', render);
+
+    // ── TOOLBAR ──────────────────────────────────────────────────────────────────
+    document.querySelectorAll('.tb-btn').forEach(btn => {
+      btn.addEventListener('mousedown', e => {
+        e.preventDefault();
+        const { wrap, prefix, insert } = btn.dataset;
+        const s = editor.selectionStart, en = editor.selectionEnd;
+        const v = editor.value;
+        let nv, cur;
+        if (wrap) {
+          const [pre, post] = wrap.split('|');
+          const sel = v.slice(s, en) || 'text';
+          nv = v.slice(0, s) + pre + sel + post + v.slice(en);
+          cur = s + pre.length + sel.length + post.length;
+        } else if (prefix) {
+          const ls = v.lastIndexOf('\n', s - 1) + 1;
+          nv = v.slice(0, ls) + prefix + v.slice(ls);
+          cur = s + prefix.length;
+        } else if (insert) {
+          const decoded = insert.replace(/&#10;/g, '\n');
+          nv = v.slice(0, s) + decoded + v.slice(en);
+          cur = s + decoded.length;
+        }
+        editor.value = nv;
+        editor.selectionStart = editor.selectionEnd = cur;
+        editor.focus();
+        render();
+      });
+    });
+
+    // ── KEYBOARD SHORTCUTS ───────────────────────────────────────────────────────
+    editor.addEventListener('keydown', e => {
+      const map = { b: '**|**', i: '//|//', d: '~~|~~' };
+      if ((e.ctrlKey || e.metaKey) && map[e.key]) {
+        e.preventDefault();
+        const [pre, post] = map[e.key].split('|');
+        const s = editor.selectionStart, en = editor.selectionEnd;
+        const sel = editor.value.slice(s, en) || 'text';
+        editor.value = editor.value.slice(0, s) + pre + sel + post + editor.value.slice(en);
+        editor.selectionStart = editor.selectionEnd = s + pre.length + sel.length + post.length;
+        render();
       }
     });
-    t += '</tbody></table>';
-    html += t;
-    tableRows = [];
-    inTable = false;
-  }
 
-  for (let i = 0; i < lines.length; i++) {
-    let line = lines[i];
-
-    // Code block
-    if (line.startsWith('    ')) {
-      if (inTable) flushTable();
-      if (!inCodeBlock) { inCodeBlock = true; codeLines = []; }
-      codeLines.push(esc(line.slice(4)));
-      olCounter = 0;
-      continue;
-    } else if (inCodeBlock) {
-      html += `<code class="mu-codeblock">${codeLines.join('\n')}</code>`;
-      inCodeBlock = false; codeLines = [];
-    }
-
-    // Collapsible
-    if (line.startsWith('[? ')) {
-      if (inTable) flushTable();
-      inCollapse = true;
-      collapseTitle = line.slice(3).trim();
-      collapseBody = '';
-      olCounter = 0;
-      continue;
-    }
-    if (inCollapse) {
-      if (line.trim() === '?]') {
-        const cid = 'cl' + (++collapseId);
-        html += `<div class="mu-details" id="${cid}"><div class="mu-summary" onclick="toggleCollapse('${cid}')"><span>${inline(collapseTitle)}</span><span class="arrow">▶</span></div><div class="mu-details-body">${miniParse(collapseBody)}</div></div>`;
-        inCollapse = false;
-      } else {
-        collapseBody += line + '\n';
-      }
-      continue;
-    }
-
-    // Table
-    if (line.trim().startsWith('|') && line.trim().endsWith('|')) {
-      inTable = true;
-      tableRows.push(line.trim());
-      olCounter = 0;
-      continue;
-    } else if (inTable) {
-      flushTable();
-    }
-
-    // Footnote definitions
-    const fnDef = line.match(/^\[\^(\w+)\]:\s+(.+)/);
-    if (fnDef) { footnotes[fnDef[1]] = fnDef[2]; continue; }
-
-    // HR
-    if (line.trim() === '---') { html += '<hr class="mu-hr">'; olCounter = 0; continue; }
-
-    // Headings
-    if (line.startsWith('### ')) { html += `<h3 class="mu-h3">${inline(line.slice(4))}</h3>`; olCounter = 0; continue; }
-    if (line.startsWith('## '))  { html += `<h2 class="mu-h2">${inline(line.slice(3))}</h2>`; olCounter = 0; continue; }
-    if (line.startsWith('# '))   { html += `<div class="mu-h1">${inline(line.slice(2))}</div>`; olCounter = 0; continue; }
-
-    // Callouts
-    const cmap = { '[INFO]':'info','[SUCCESS]':'success','[WARNING]':'warning','[ERROR]':'error' };
-    const imap = { 'info':'ℹ','success':'✓','warning':'⚠','error':'✕' };
-    let gotCallout = false;
-    for (const [tag, cls] of Object.entries(cmap)) {
-      if (line.startsWith(tag)) {
-        html += `<div class="mu-callout ${cls}"><span class="icon">${imap[cls]}</span><span>${inline(line.slice(tag.length).trim())}</span></div>`;
-        gotCallout = true; olCounter = 0; break;
-      }
-    }
-    if (gotCallout) continue;
-
-    // Quote
-    if (line.startsWith('> ')) { html += `<blockquote class="mu-quote">${inline(line.slice(2))}</blockquote>`; olCounter = 0; continue; }
-
-    // Checkbox
-    const cbm = line.match(/^\[(x| )\] (.+)/i);
-    if (cbm) {
-      const checked = cbm[1].toLowerCase() === 'x';
-      html += `<label class="mu-check${checked?' checked':''}" onclick="this.classList.toggle('checked')"><span class="mu-check-box"></span><span class="mu-check-label">${inline(cbm[2])}</span></label>`;
-      olCounter = 0; continue;
-    }
-
-    // Ordered list
-    const olm = line.match(/^(\d+)\.\s+(.+)/);
-    if (olm) {
-      olCounter++;
-      html += `<div class="mu-oli"><span class="num">${olCounter}.</span><span>${inline(olm[2])}</span></div>`;
-      continue;
-    } else { olCounter = 0; }
-
-    // Unordered list
-    if (line.startsWith('- ')) { html += `<div class="mu-li">${inline(line.slice(2))}</div>`; continue; }
-
-    // Blank
-    if (line.trim() === '') { continue; }
-
-    // Paragraph
-    html += `<p>${inline(line)}</p>`;
-  }
-
-  if (inCodeBlock) html += `<code class="mu-codeblock">${codeLines.join('\n')}</code>`;
-  if (inTable) flushTable();
-
-  // Footnotes section (always render if any were collected in pass 1)
-  const fkeys = Object.keys(footnotes);
-  if (fkeys.length) {
-    html += '<div class="mu-footnotes"><div class="fn-title">Footnotes</div>';
-    for (const k of fkeys) {
-      html += `<div class="mu-fn-entry" id="fn-${k}"><span class="fn-num">[${k}]</span><span>${inline(footnotes[k])}</span></div>`;
-    }
-    html += '</div>';
-  }
-
-  return html;
-}
-
-function miniParse(text) {
-  return text.trim().split('\n').map(l => l.trim() ? `<p style="margin-bottom:8px;color:#c8c4bc;font-size:14px">${inline(l)}</p>` : '').join('');
-}
-
-function inline(text) {
-  text = esc(text);
-  text = text.replace(/\*\*(.+?)\*\*/g, '<span class="mu-bold">$1</span>');
-  text = text.replace(/\/\/(.+?)\/\//g, '<em class="mu-italic">$1</em>');
-  text = text.replace(/~~(.+?)~~/g, '<span class="mu-strike">$1</span>');
-  text = text.replace(/==(.+?)==/g, '<span class="mu-highlight">$1</span>');
-  text = text.replace(/`(.+?)`/g, '<code class="mu-code">$1</code>');
-  text = text.replace(/\[\[(.+?)\]\]/g, '<kbd class="mu-kbd">$1</kbd>');
-  text = text.replace(/\[\^(\w+)\](?!:)/g, '<sup class="mu-sup"><a href="#fn-$1" style="color:inherit;text-decoration:none">[$1]</a></sup>');
-  text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<div class="mu-img-wrap"><img class="mu-img" src="$2" alt="$1"><div class="mu-img-caption">$1</div></div>');
-  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a class="mu-link" href="$2" target="_blank">$1</a>');
-  return text;
-}
-
-function esc(t) {
-  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-function toggleCollapse(id) { document.getElementById(id).classList.toggle('open'); }
-
-// ── RENDER ───────────────────────────────────────────────────────────────────
-const editor = document.getElementById('editor');
-const preview = document.getElementById('preview');
-
-function render() {
-  preview.innerHTML = parseMarkup(editor.value);
-  const t = editor.value;
-  document.getElementById('wc').textContent = t.trim() ? t.trim().split(/\s+/).length : 0;
-  document.getElementById('cc').textContent = t.length;
-  document.getElementById('lc').textContent = t.split('\n').length;
-}
-
-editor.addEventListener('input', render);
-
-// ── TOOLBAR ──────────────────────────────────────────────────────────────────
-document.querySelectorAll('.tb-btn').forEach(btn => {
-  btn.addEventListener('mousedown', e => {
-    e.preventDefault();
-    const { wrap, prefix, insert } = btn.dataset;
-    const s = editor.selectionStart, en = editor.selectionEnd;
-    const v = editor.value;
-    let nv, cur;
-    if (wrap) {
-      const [pre, post] = wrap.split('|');
-      const sel = v.slice(s, en) || 'text';
-      nv = v.slice(0, s) + pre + sel + post + v.slice(en);
-      cur = s + pre.length + sel.length + post.length;
-    } else if (prefix) {
-      const ls = v.lastIndexOf('\n', s - 1) + 1;
-      nv = v.slice(0, ls) + prefix + v.slice(ls);
-      cur = s + prefix.length;
-    } else if (insert) {
-      const decoded = insert.replace(/&#10;/g, '\n');
-      nv = v.slice(0, s) + decoded + v.slice(en);
-      cur = s + decoded.length;
-    }
-    editor.value = nv;
-    editor.selectionStart = editor.selectionEnd = cur;
-    editor.focus();
-    render();
-  });
-});
-
-// ── KEYBOARD SHORTCUTS ───────────────────────────────────────────────────────
-editor.addEventListener('keydown', e => {
-  const map = { b: '**|**', i: '//|//', d: '~~|~~' };
-  if ((e.ctrlKey || e.metaKey) && map[e.key]) {
-    e.preventDefault();
-    const [pre, post] = map[e.key].split('|');
-    const s = editor.selectionStart, en = editor.selectionEnd;
-    const sel = editor.value.slice(s, en) || 'text';
-    editor.value = editor.value.slice(0, s) + pre + sel + post + editor.value.slice(en);
-    editor.selectionStart = editor.selectionEnd = s + pre.length + sel.length + post.length;
-    render();
-  }
-});
-
-// ── EXPORT ───────────────────────────────────────────────────────────────────
-document.getElementById('export-btn').addEventListener('click', () => {
-  const body = preview.innerHTML;
-  const doc = `<!DOCTYPE html>
+    // ── EXPORT ───────────────────────────────────────────────────────────────────
+    document.getElementById('export-btn').addEventListener('click', () => {
+      const body = preview.innerHTML;
+      const doc = `<!DOCTYPE html>
 <html><head><meta charset="UTF-8"><title>Markup Export</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne+Mono&family=Syne:wght@400;700;800&display=swap');
@@ -601,14 +1036,15 @@ document.querySelectorAll('.mu-details-body').forEach(b=>b.style.display='none')
 document.querySelectorAll('.mu-summary').forEach(s=>s.addEventListener('click',function(){const d=this.parentElement;d.classList.toggle('open');d.querySelector('.mu-details-body').style.display=d.classList.contains('open')?'block':'none'}));
 <\/script>
 </body></html>`;
-  const blob = new Blob([doc], { type: 'text/html' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'markup-export.html';
-  a.click();
-});
+      const blob = new Blob([doc], { type: 'text/html' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'markup-export.html';
+      a.click();
+    });
 
-render();
-</script>
+    render();
+  </script>
 </body>
+
 </html>
